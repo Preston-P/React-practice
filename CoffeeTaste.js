@@ -1,7 +1,6 @@
 import React, { useState, Component } from "react";
 import Coffee from "./coffee";
 import Menu from "../Home-components/menu";
-import Form from "../Home-components/form";
 
 function CoffeeContext() {
   const [coffees, setCoffees] = useState([
@@ -12,40 +11,31 @@ function CoffeeContext() {
   ]);
 
   const handleSubmit = event => {
-    // alert("your favorite flavor is" + event.target.value);
+    alert(`your favorite flavor is ${coffees.type}`);
     event.preventDefault();
   };
 
   const handleChange = event => {
-    setCoffees({ descr: event.target.value });
+    setCoffees({ type: event.target.value });
+  };
+
+  const filterDescr = descr => {
+    setCoffees(coffee => {
+      const coffees = coffee.coffees.filter(item => item.descr !== descr);
+    });
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        <Menu>
-          {coffees.map(coffee => (
-            <option key={coffees.type} value={coffee.type}>
-              {coffee.type}
-            </option>
-          ))}
+        <Menu onChange={handleChange} value={coffees.type}>
+          <option value="Fruity">Fruity</option>
+          <option value="Biscuit">Biscuit/Malt</option>
+          <option value="Chocolate">Chocolate</option>
+          <option value="Earthy">Earthy</option>
         </Menu>
-        <input
-          type="submit"
-          value="Submit"
-          name="text"
-          onChange={handleChange}
-        ></input>
-        ;
+        <input type="submit" value="submit"></input>;
       </label>
-      <div>
-        {coffees.map(coffee => (
-          <div>
-            {coffee.descr}
-            <br />
-          </div>
-        ))}
-      </div>
     </form>
   );
 }
